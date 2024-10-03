@@ -35,34 +35,6 @@ h1 {
   line-height: 1.1;
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #f7df1eaa);
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -74,23 +46,34 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+body{ //Define body grid-style
+  display: grid; 
+  justify-content: center; //Main-Axis Center
+  align-content: center; //Höhe Center 
 }
+
+#humanBoardID, #computerBoardID{ //Define behavior for squares: Gameboard drawMap(); 
+  display: grid; 
+  /* Defined by class method*/
+  // grid-template-columns: repeat(autofill, 50px);
+  height: 100%; 
+  width: 100%; 
+  border: 2px solid #f6ff00;
+}
+
+.square{
+  width: 50px; //Define square sizes. 
+  height: 50px; 
+  border: 1px solid white;  
+}
+

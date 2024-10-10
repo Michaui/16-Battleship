@@ -1,9 +1,19 @@
 import "./style.scss";
-//import { ... } from './ship.js'
-import Gameboard from "./gameboard.js";
+import Game from "./game.js";
 
-const humanBoard = new Gameboard("human", "humanBoardID");
-const computerBoard = new Gameboard("computer", "computerBoardID");
+// Create a new instance of the Game class
+const game = new Game();
 
-humanBoard.drawMap(); // Draw humanBoard
-computerBoard.drawMap(); // Draw computerBoard
+// Start the game to initialize everything
+game.startGame();
+
+// Assuming you have a reference to the game and squares
+const squares = document.querySelectorAll(".square"); // Get all square elements
+
+squares.forEach((square) => {
+  square.addEventListener("click", () => {
+    const x = square.dataset.col; // Get coordinates
+    const y = square.dataset.row;
+    game.handleAttack(x, y); // Call the attack method
+  });
+});

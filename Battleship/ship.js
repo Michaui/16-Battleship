@@ -1,37 +1,43 @@
 // Ship Class Properties
-// length: size of the ship (int)
-// hit: number of times the ship has been hit (int)
-// sunk: true if the ship is sunk (boolean)
-// direction: orientation of the ship ('horizontal' or 'vertical')
-// id: unique identifier for the ship (int or string)
-
 class Ship {
-  constructor(id, startPositon, lengths = 3) {
-    this.position = startPositon;
-    this.length = lengths;
-    this.hitCount = 0;
-    this.sunk = false;
-    this.direction = "horizontal";
-    this.id = id;
+  constructor(id, shipLength = 3) {
+    this.id = id; // id: unique identifier for the ship (int or string)
+    this.position = null; //startposition is null as default
+    this.shipLength = shipLength; // length: size of the ship (int)
+    this.hits = Array(shipLength).fill(false); // track hits on the ship [false,false,false] 
+    this.sunk = false; // sunk: true if the ship is sunk (boolean)
+    this.direction = "horizontal"; // orientation of the ship (default:'horizontal','vertical')
+    this.previousPosition = null; //Default set initial position as null.
   }
 
   // ClassMethods
-  setDirection(direction) {
-    // setDirection(direction): sets the ship's direction ('horizontal' or 'vertical')
-    this.direction = direction;
+  setPosition(newPosition) {
+    this.previousPosition = [...this.position]; //Save previous as copy from this.position.
+    this.position = newPosition;
   }
 
-  hit() {
-    // hit(): registers a hit on the ship
-    this.hitCount += 1; //this.hits = this.hits +1
-    if (this.hitCount >= this.length) {
-      this.sunk = true;
+  hit(hitPosition) {
+    if (hitPosition < this.shipLength) { 
+      //hitPosition must be smaller than the length of the ship in relation to the starting point: receiveAttack()
+      this.hits[hitPosition] = true; //Declaration of hitted position from ship
+      console.log(`Ship hit at position ${hitPosition}`);
     }
   }
 
   isSunk() {
     // isSunk(): returns true if the number of hits equals the ship's length
-    return this.sunk;
+    return this.hits.every((hit) => hit === true); // checks if all positions are hit
+  }
+
+  changeDirection() {
+    //change direction of ship´s
+    this.direction =
+      this.direction === "horizontal" ? "vertical" : "horizontal";
+  }
+
+  setRandomDirection() {
+    // Sets the ship's direction randomly
+    this.direction = Math.random() < 0.5 ? "horizontal" : "vertical"; //Random number between 0-1 -> condition
   }
 }
 

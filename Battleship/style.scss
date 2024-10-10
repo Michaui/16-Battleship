@@ -77,3 +77,35 @@ body{ //Define body grid-style
   border: 1px solid white;  
 }
 
+/* Treffer */
+.square.hit {
+  background-color: red;
+}
+
+/* Verfehlter Angriff */
+.square.missed {
+  background-color: blue;
+}
+
+
+// /* Treffer mit einer Animation */
+// .square.hit {
+//   background-color: red;
+//   animation: hit-animation 0.5s ease-in-out;
+// }
+
+// @keyframes hit-animation {
+//   0% { background-color: white; }
+//   100% { background-color: red; }
+// }
+
+// /* Verfehlter Angriff mit einer Animation */
+// .square.missed {
+//   background-color: blue;
+//   animation: miss-animation 0.5s ease-in-out;
+// }
+
+// @keyframes miss-animation {
+//   0% { background-color: white; }
+//   100% { background-color: blue; }
+// }

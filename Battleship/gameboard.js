@@ -1,11 +1,4 @@
 // Gameboard Class Properties
-// boardElement: declaration board
-// squares: define boardgame squares
-// player: set boardgame for specific player
-// sizeX, sizeY: dimensions of the board (int)
-// ships: list of ships on the board (array of Ship objects)
-// missedAttack: coordinates of missed attacks (array of [x, y])
-// drawmap: renders the gameboard visually
 class Gameboard {
   constructor(player, boardID) {
     this.boardElement = document.getElementById(boardID);
@@ -20,7 +13,6 @@ class Gameboard {
 
   // Class Methods
   drawMap() {
-    // drawMap(): renders the gameboard visually
     // this.boardElement.innerHTML = ""; Only nescessery if you call drawMap as class method again:
     this.boardElement.style.gridTemplateColumns = `repeat(${this.boardSize}, 1fr)`; //Rows defined by method loops
 
@@ -47,7 +39,6 @@ class Gameboard {
 
   // receiveAttack: Define attacks on gameboard
 
-  // recordMissedAttack(x, y): stores missed attack coordinates
   recordMissedAttack(x, y) {
     this.missedAttack.push([x, y]);
     console.log(`Missed attack recorded at ${x}, ${y}`);

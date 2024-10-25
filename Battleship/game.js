@@ -40,6 +40,13 @@ class Game {
     }
   */
 
+  // Start game
+  startGame() {
+    this.updateTurnDisplay();
+    this.humanBoard.drawMap(); // draw board for human player
+    this.computerBoard.drawMap(); // draw board for computer player
+  }
+
   switchTurn() {
     this.currentPlayer = this.currentPlayer === "human" ? "computer" : "human";
     this.updateTurnDisplay();
@@ -49,13 +56,6 @@ class Game {
   updateTurnDisplay() {
     const displayElement = document.getElementById("turnDisplay");
     displayElement.textContent = `It's ${this.currentPlayer}'s turn!`;
-  }
-
-  // Start game
-  startGame() {
-    this.updateTurnDisplay();
-    this.humanBoard.drawMap(); // draw board for human player
-    this.computerBoard.drawMap(); // draw board for computer player
   }
 
   // Handle attack based on the current player

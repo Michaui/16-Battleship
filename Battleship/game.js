@@ -47,6 +47,11 @@ class Game {
     this.computerBoard.drawMap(); // draw board for computer player
   }
 
+  // Place Ships for human and computer player
+    //Create ships
+    //placeShipsRandomly(ships) for computer
+    //Palce ships for human player
+
   switchTurn() {
     this.currentPlayer = this.currentPlayer === "human" ? "computer" : "human";
     this.updateTurnDisplay();

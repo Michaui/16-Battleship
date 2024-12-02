@@ -41,7 +41,7 @@ class Player {
     } while (opponentBoard.board[y][x] !== null); //Make sure that AI attack doen´t hit fields that have already been attacked
 
     console.log(`Computer attacks at (${x}, ${y})`);
-    opponentBoard.receiveAttack(x, y);
+    opponentBoard.receiveAttack(x, y); //send coordinate to next function
   }
 }
 

@@ -67,7 +67,8 @@ class Gameboard {
 
   // Check if a ship can be placed on the board
   canPlaceShip(ship, x, y) {
-    const { shipLength, direction } = ship; //------- WAS PASSIERT HIER ???????????????????????
+    // Extrahierung: wie z.B.: const shipLength = ship.shipLength; 
+    const { shipLength, direction } = ship;
 
     if (direction === "horizontal") {
       if (x + shipLength > this.boardSize) return false; // Out of bounds

@@ -22,10 +22,9 @@ class Game {
   Alternative
 
   Constructor(){...
-  //this.ships = this.createShips();}
+  this.ships = this.createShips();}
 
   assignShipsToPlayer(humanPlayer, computerPlayer) {
-      //humanPlayer.placeShipsRandomly([...this.ships]); Only if placeShipsRandomly is placed in the player class.
     humanPlayer.board.placeShipsRandomly([...this.ships]);
     computerPlayer.board.placeShipsRandomly([...this.ships]);
   }
@@ -48,9 +47,9 @@ class Game {
   }
 
   // Place Ships for human and computer player
-    //Create ships
-    //placeShipsRandomly(ships) for computer
-    //Palce ships for human player
+  //Create ships
+  //placeShipsRandomly(ships) for computer
+  //Palce ships for human player
 
   switchTurn() {
     this.currentPlayer = this.currentPlayer === "human" ? "computer" : "human";

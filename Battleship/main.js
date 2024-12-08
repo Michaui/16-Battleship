@@ -1,5 +1,6 @@
 import "./style.scss";
 import Game from "./game.js";
+import "./frame.js";
 
 // Create a new instance of the Game class
 const game = new Game();

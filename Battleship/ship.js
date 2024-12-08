@@ -14,6 +14,7 @@ class Ship {
   setPosition(newPosition) {
     this.previousPosition = [...this.position]; //Save previous as copy from this.position.
     this.position = newPosition;
+    console.log(`sat on ${this.position}`)
   }
 
   hit(hitPosition) {

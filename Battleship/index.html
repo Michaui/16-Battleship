@@ -6,9 +6,21 @@
     <title>Battleship</title>
   </head>
   <body>
-    <div id="humanBoardID"></div>
-    <div id="computerBoardID"></div>
+
+    <button class="startBtn">START</button>
     <div id="turnDisplay"></div>
+    <div id="boardContainer">
+      <div id="humanBoardID"></div>
+      <div id="computerBoardID"></div>
+    </div>
+    <div id="shipContainer">
+      <button class="flipBtn">FLIP SHIPS</button>
+      <div class="destroyer-preview" draggable="true"></div>
+      <div class="submarine-preview" draggable="true"></div>
+      <div class="battleship-preview" draggable="true"></div>
+      <div class="carrier-preview" draggable="true"></div>
+    </div>
+    </div>
     <script type="module" src="/main.js"></script>
   </body>
 </html>

@@ -43,7 +43,7 @@ class Gameboard {
   //getDrawedSquare: Nehme aus dem drawMap die richtige Kachel 
   //Nächste Methode drawShip() und zeichne darauf das schiff? 
   //getSquare(row, col){
-    //return this.squares.find(square => square.dataset.row == row && square.dataset.col == col); 
+  //return this.squares.find(square => square.dataset.row == row && square.dataset.col == col); 
   //}
 
   //create ships for gameboard
@@ -65,26 +65,6 @@ class Gameboard {
     ];
   }
 
-  // Check if a ship can be placed on the board
-  canPlaceShip(ship, x, y) {
-    // Extrahierung: wie z.B.: const shipLength = ship.shipLength; 
-    const { shipLength, direction } = ship;
-
-    if (direction === "horizontal") {
-      if (x + shipLength > this.boardSize) return false; // Out of bounds
-      for (let i = 0; i < shipLength; i++) {
-        if (this.board[y][x + i] !== null) return false; // Collision detected
-      }
-    } //(direction === "vertical")
-    else {
-      if (y + shipLength > this.boardSize) return false; // Out of bounds
-      for (let i = 0; i < shipLength; i++) {
-        if (this.board[y + i][x] !== null) return false; // Collision detected
-      }
-    }
-
-    return true; // No collision, can place ship
-  }
 
   //Place ship on boardgame: main.js event
   placeShip(ship, x, y) {
@@ -117,6 +97,29 @@ class Gameboard {
     }
     //------ADD UI FOR PLACING A SHIP!!!!!!!
   }
+
+
+  // Check if a ship can be placed on the board
+  canPlaceShip(ship, x, y) {
+    // Extrahierung: wie z.B.: const shipLength = ship.shipLength; 
+    const { shipLength, direction } = ship;
+
+    if (direction === "horizontal") {
+      if (x + shipLength > this.boardSize) return false; // Out of bounds
+      for (let i = 0; i < shipLength; i++) {
+        if (this.board[y][x + i] !== null) return false; // Collision detected
+      }
+    } //(direction === "vertical")
+    else {
+      if (y + shipLength > this.boardSize) return false; // Out of bounds
+      for (let i = 0; i < shipLength; i++) {
+        if (this.board[y + i][x] !== null) return false; // Collision detected
+      }
+    }
+
+    return true; // No collision, can place ship
+  }
+
 
   //Place ships randomly for computer player
   placeShipsRandomly(ships) {
@@ -153,15 +156,26 @@ class Gameboard {
       const ship = target; //Set target as ship aka Object einfach mit this.board[y][x] herausholen?????????????????????????
       // const ship = this.board[y][x]; // Get the ship object
 
-      const hitPosition =
-        ship.direction === "horizontal"
-          ? x - ship.position[0]
-          : y - ship.position[1];
+      const hitPosition = ship.direction === "horizontal"
+        ? x - ship.position[0] //Abfrage der Position des Objekt Ships ship.position[0] (x-Kooridnate, weil sich nur bei Horizonzale die Zahl ändert "changes"; y-Koordinate bleibt konstant, weil sich die Höhe nicht ändert), heißt ship.position [x-Position] beziehungsweise überschreiben von this.position = null; oder ship.position = [x=2, y=3]
+        : y - ship.position[1]; //Abfrage der Position des Objekt Ships ship.position[1] (y-Koordinate, weil sich nur bei Vertikal die Zahl ändert "changes"; x-Koordinate bleibt konstant, weil sich die breite nicht ändert), heißt ship.position [y-Position] beziehungsweise überschreiben von this.position = null; 
       /* 
       The line ship.position[0] is set in the placeShip() method when the ship is positioned by: 
       placeShip(ship, x, y){... ship.setPosition([x, y]) ...}
       -> ? Calculate based on startposition (x,y) and hit position for horizontal ship (y constant, x changes) -> startpositionX - hitPositionX = shipPart 1-n
       -> : Else calculate based on startposition (x,y) and hit position for vertical ship (y changes, x constant) -> startpositionY - hitPositionY = shipPart 1-n
+      
+      Beispiel: Horizontale Platzierung
+        Schiffsposition: ship.position = [2, 3] (Startpunkt: x=2, y=3)
+        Schiffslänge: 3 Felder gesetzt mit Ship.position: (1Feld:[2, 3]; 2Feld:[2, 3]; 3Feld:[2, 3])
+        Aktueller Treffer: x = 4, y = 3 (Zelle, auf die geschossen wird)
+        Wenn das Schiff horizontal liegt, interessiert uns die x-Koordinate.
+
+        Berechnung:
+
+        javascript
+        Code kopieren
+        hitPosition = x - ship.position[0]; // 4 - 2 = 2
       */
 
       ship.hit(hitPosition); // Call the hit method with relative hit position (1-n)

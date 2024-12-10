@@ -23,7 +23,7 @@ class Gameboard {
   drawMap() {
     // this.boardElement.innerHTML = ""; Only nescessery if you call drawMap as class method again:
     this.boardElement.style.gridTemplateColumns = `repeat(${this.boardSize}, 1fr)`; //Rows defined by method loops
-
+    
     for (let row = 0; row < this.boardSize; row++) {
       for (let col = 0; col < this.boardSize; col++) {
         // console.log(`Drawing map for ${this.player}`);
@@ -36,6 +36,10 @@ class Gameboard {
         this.boardElement.appendChild(square);
         this.squares.push(square); //push square to squares array
       }
+    }
+
+    if (this.boardElement.id == 'computerBoardID'){ //<div id="computerBoardID"></div>
+      this.boardElement.style.display = 'none'; //Disable Computerboard
     }
   }
 

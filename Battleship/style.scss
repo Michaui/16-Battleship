@@ -59,18 +59,39 @@ button:focus-visible {
 
 body {
   //Define body grid-style
-  display: grid;
+  display: flex;
+
   justify-content: center; //Main-Axis Center
   align-content: center; //Höhe Center 
 
-  #boardContainer, #shipContainer {
+  #boardContainer {
     display: flex;
     gap: 15px;
     align-items: center;
   }
 
+  .containers{
+    display: flex; 
+    flex-direction: column;
+  }
+
   #shipContainer{
-    height: 100px; 
+  display: flex;          /* Damit die Schiffe nebeneinander oder untereinander angeordnet sind */
+  flex-direction: flex;
+
+  /* flex-wrap: wrap;   */       /* Zeilenumbruch erlauben */
+  align-items: center;     /* Zentrierung */
+  justify-content: center; /* Zentrierung */
+  gap: 10px;               /* Abstand zwischen den Schiffen */
+
+height:300px; 
+
+    div {  
+      //Funktionier weil shipContainer.forEach((ship) zu deklarierten Divs sind. 
+      //const shipContainer = container.querySelectorAll('div'); 
+      transition: transform 0.3s ease, height 0.3s ease, width 0.3s ease;
+      height: 300px; 
+    }
 
     .destroyer-preview{
       width: 200px; 

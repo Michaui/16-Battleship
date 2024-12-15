@@ -2,7 +2,7 @@ import Ship from "./ship.js";
 
 // Gameboard Class Properties
 class Gameboard {
-  constructor(player, boardID, boardSize = 10) {
+  constructor(player, boardID, boardSize = 9) {
     this.player = player; //Declartion gameboard for human and computer player
     this.boardElement = document.getElementById(boardID); // boardElement: declaration board
     this.boardSize = boardSize; // sizeX, sizeY: dimensions of the board (int)
@@ -23,27 +23,25 @@ class Gameboard {
   drawMap() {
     // this.boardElement.innerHTML = ""; Only nescessery if you call drawMap as class method again:
     this.boardElement.style.gridTemplateColumns = `repeat(${this.boardSize}, 1fr)`; //Rows defined by method loops
-    
-    for (let row = 0; row < this.boardSize; row++) {
-      for (let col = 0; col < this.boardSize; col++) {
+
+    for (let col = 0; col < this.boardSize; col++) {
+      for (let row = 0; row < this.boardSize; row++) {
         // console.log(`Drawing map for ${this.player}`);
         const square = document.createElement("div");
         square.classList.add("square");
         square.dataset.row = row;
         square.dataset.col = col;
-        // square.style.width = "50px"; //Defined by SCSS.
-        // square.style.height = "50px";
+        // square.style.width = "50px"; square.style.height = "50px"; //Defined by SCSS.
         this.boardElement.appendChild(square);
         this.squares.push(square); //push square to squares array
       }
     }
 
-    if (this.boardElement.id == 'computerBoardID'){ //<div id="computerBoardID"></div>
+    if (this.boardElement.id == 'computerBoardID') { //<div id="computerBoardID"></div>
       this.boardElement.style.display = 'none'; //Disable Computerboard
     }
   }
 
-  //??????
   //getDrawedSquare: Nehme aus dem drawMap die richtige Kachel 
   //Nächste Methode drawShip() und zeichne darauf das schiff? 
   //getSquare(row, col){
@@ -62,33 +60,38 @@ class Gameboard {
         console.log(foundShip); // Ausgabe: Ship { id: 2, length: 4 }
     */
     return [
-      new Ship(1, 5), //(id,length)
-      new Ship(2, 4),
-      new Ship(3, 3),
-      new Ship(4, 2),
+      new Ship(0, "destroyer", 5), //(id,length)
+      new Ship(1, "submarine", 4),
+      new Ship(2, "battleship", 3),
+      // new Ship(3, "carrier", 2)
     ];
   }
 
 
   //Place ship on boardgame: main.js event
   placeShip(ship, x, y) {
-    if (this.canPlaceShip(ship, x, y)) {
-      //Verhlaten this. klören! Woher weiß welches Board dran ist.?????????
-      const { shipLength, direction } = ship; //WAS PASSIERT HIER??????????????????????????
+    if (this.canPlaceShip(ship, x, y)) { //Check if true
+      const { shipLength, direction } = ship; //Hole die Attribute aus dem Objekt: 3, horizontal und speicher sie in die Variablen  shipLength und direction. 
 
-      ship.setPosition([x, y]); // Set the starting position of the ship instance/object
-      ship.direction = direction; // Ensure direction is set correctly
+      ship.setPosition(x, y); // Set the starting position of the ship instance/object
+      // ship.direction = direction; // Ensure direction is set correctly
 
       if (direction === "horizontal") {
         for (let i = 0; i < shipLength; i++) {
           /*Set the ship horizontally:
           The ship object is not copied or instantiated three times! 
           Instead, each of the shipLength positions in the board array is REFERENCED to the same ship object.*/
-          this.board[y][x + i] = ship;
+          this.board[x][y + i] = ship;
+          this.drawShipSquare(x, y + i);
+          console.log(ship)
+          console.log(this.board)
         }
       } else if (direction === "vertical") {
         for (let i = 0; i < shipLength; i++) {
-          this.board[y + i][x] = ship; // Set the ship vertically
+          this.board[x + i][y] = ship; // Set the ship vertically
+          this.drawShipSquare(x + i, y);
+          console.log(ship)
+          console.log(this.board)
         }
       }
 
@@ -98,26 +101,31 @@ class Gameboard {
       }
     } else {
       console.error("Cannot place ship here!");
+      //------ADD UI FUNCTION FOR "CANT PLACING A SHIP ONLY FOR HUMAN PLAYER!!!!!!!"
     }
-    //------ADD UI FOR PLACING A SHIP!!!!!!!
   }
 
 
   // Check if a ship can be placed on the board
   canPlaceShip(ship, x, y) {
+    if (isNaN(x) || isNaN(y)) { //Check random x,y coordinates
+      console.error(`Invalid coordinates in canPlaceShip: x=${x}, y=${y}`);
+      return false;
+    }
+    
     // Extrahierung: wie z.B.: const shipLength = ship.shipLength; 
     const { shipLength, direction } = ship;
 
     if (direction === "horizontal") {
-      if (x + shipLength > this.boardSize) return false; // Out of bounds
+      if (y + shipLength > this.boardSize) return false; // Out of bounds
       for (let i = 0; i < shipLength; i++) {
-        if (this.board[y][x + i] !== null) return false; // Collision detected
+        if (this.board[x][y + i] !== null) return false; // Collision detected
       }
     } //(direction === "vertical")
     else {
-      if (y + shipLength > this.boardSize) return false; // Out of bounds
+      if (x + shipLength > this.boardSize) return false; // Out of bounds
       for (let i = 0; i < shipLength; i++) {
-        if (this.board[y + i][x] !== null) return false; // Collision detected
+        if (this.board[x + i][y] !== null) return false; // Collision detected
       }
     }
 
@@ -131,38 +139,43 @@ class Gameboard {
       let placed = false;
 
       while (!placed) {
-        const direction = Math.random() < 0.5 ? "horizontal" : "vertical";
-        const x = Math.floor(Math.random() * this.board.boardSize);
-        const y = Math.floor(Math.random() * this.board.boardSize);
-        ship.setRandomDirection();
+        const direction = Math.random() < 0.5 ? "vertical" : "horizontal";
+        ship.direction = direction;
+        const x = Math.floor(Math.random() * this.boardSize); //Fehler -> this.boardSize, statt this.board.boardSize
+        const y = Math.floor(Math.random() * this.boardSize);
 
-        if (this.board.canPlaceShip(ship, x, y)) {
-          this.board.placeShip(ship, x, y);
+        if (this.canPlaceShip(ship, x, y)) {
+          this.placeShip(ship, x, y);
+          console.log(`Ship ${ship.id} placed successfully at (${x}, ${y}) with direction ${direction}!`);
           placed = true;
+        } else {
+          console.log(`Cannot place ship ${ship.id} at (${x}, ${y}) -> Retry`);
         }
       }
     });
   }
 
   //updateSquare() // Update square
+ 
+  drawShipSquare(x, y) { //------ADD UI FOR PLACING A SHIP!!!!!!!
+    const square = this.squares.find((sq) => sq.dataset.row == (y) && sq.dataset.col == (x));
+    square.classList.add("ship");
+  }
+
 
   //handles an attack on the board, checks if a ship is hit
-  receiveAttack(x, y) {
+  receiveAttack(x, y) { //Wird aufgerufen mit player.gameboard.receiveAttack(x,y).
     //if (this.board[y][x] !== null) {
 
-    //------- Warum kann hier einfach this.board stehen? ???????????????????????
-    //------- obwohl vielleicht nicht klar ist welcher Spieler dran ist?????????
-    //------- Und warum funktiniert this.board[y][x] für target zur Überorpfüng: Warum kein () oder [,]?????????
-    //------- board ist doch ein Array im Array, warum geht dann this.board[y][x]
     const target = this.board[y][x]; //gameboard y,x VS. graph x,y
+    // const ship = this.board[y][x]; // Get the ship object
 
     if (target !== null) {
       const ship = target; //Set target as ship aka Object einfach mit this.board[y][x] herausholen?????????????????????????
-      // const ship = this.board[y][x]; // Get the ship object
 
       const hitPosition = ship.direction === "horizontal"
-        ? x - ship.position[0] //Abfrage der Position des Objekt Ships ship.position[0] (x-Kooridnate, weil sich nur bei Horizonzale die Zahl ändert "changes"; y-Koordinate bleibt konstant, weil sich die Höhe nicht ändert), heißt ship.position [x-Position] beziehungsweise überschreiben von this.position = null; oder ship.position = [x=2, y=3]
-        : y - ship.position[1]; //Abfrage der Position des Objekt Ships ship.position[1] (y-Koordinate, weil sich nur bei Vertikal die Zahl ändert "changes"; x-Koordinate bleibt konstant, weil sich die breite nicht ändert), heißt ship.position [y-Position] beziehungsweise überschreiben von this.position = null; 
+        ? x - ship.position[0] //y, x: Abfrage der Position des Objekt Ships ship.position[0] (x-Kooridnate, weil sich nur bei Horizonzale die Zahl ändert "changes"; y-Koordinate bleibt konstant, weil sich die Höhe nicht ändert), heißt ship.position [x-Position] beziehungsweise überschreiben von this.position = null; oder ship.position = [x=2, y=3]
+        : y - ship.position[1]; //y, x: Abfrage der Position des Objekt Ships ship.position[1] (y-Koordinate, weil sich nur bei Vertikal die Zahl ändert "changes"; x-Koordinate bleibt konstant, weil sich die breite nicht ändert), heißt ship.position [y-Position] beziehungsweise überschreiben von this.position = null; 
       /* 
       The line ship.position[0] is set in the placeShip() method when the ship is positioned by: 
       placeShip(ship, x, y){... ship.setPosition([x, y]) ...}
@@ -176,9 +189,6 @@ class Gameboard {
         Wenn das Schiff horizontal liegt, interessiert uns die x-Koordinate.
 
         Berechnung:
-
-        javascript
-        Code kopieren
         hitPosition = x - ship.position[0]; // 4 - 2 = 2
       */
 

@@ -1,12 +1,14 @@
 //Collect all ships under shipContainer after button selector
-const container = document.querySelector('#shipContainer'); //select first
-const shipContainer = container.querySelectorAll('div'); //select all divs and return as array
+// const container = document.querySelector('#shipContainer'); //select first
+// const shipContainer = container.querySelectorAll('div'); //select all divs in shipContainer and return as array
+
+
 
 const flipBtn = document.querySelector('.flipBtn');
-const startBtn = document.querySelector('.startBtn');
+// const startBtn = document.querySelector('.startBtn');
+
 
 let angle = '0'
-
 function flip() {
     // console.log(shipContainer.children); Do not work because of flipBtn. Just want ship Divs. 
     //const optionShips = (Array.from(shipContainer)); //returns all 4 ship divs and set it as array. 
@@ -21,15 +23,14 @@ function flip() {
     Wenn die Bedingung falsch ist, wird valueIfFalse ('0') zurückgegeben.
     */
    
-/*     if (angle === '0'){shipContainer.style.width = '100px'}
+/*  if (angle === '0'){shipContainer.style.width = '100px'}
     else {shipContainer.style.width = '200px'}; */
     
-    shipContainer.forEach((ship) => {
-        // Drehe jedes Schiff
-        ship.style.transform = `rotate(${angle}deg)`;
-      }); //shipContainer is allready an array. 
-
-
+    shipContainer.forEach((ship) => { //shipContainer is an array. 
+        ship.style.transform = `rotate(${angle}deg)`; // Drehe jedes Schiff
+      }); 
 }
 
 flipBtn.addEventListener('click', flip); 
+
+

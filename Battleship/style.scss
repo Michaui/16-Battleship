@@ -141,6 +141,11 @@ height:300px;
   background-color: red;
 }
 
+/* Treffer */
+.square.ship {
+  background-color: rgb(47, 0, 255);
+}
+
 /* Verfehlter Angriff */
 .square.missed {
   background-color: blue;

@@ -8,6 +8,8 @@ const game = new Game();
 // Start the game to initialize everything
 game.startGame();
 
+
+
 // Assuming you have a reference to the game and squares
 const squares = document.querySelectorAll(".square"); // Get all square elements
 

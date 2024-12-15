@@ -2,11 +2,9 @@ import "./style.scss";
 import Game from "./game.js";
 import "./frame.js";
 
-// Create a new instance of the Game class
-const game = new Game();
 
-// Start the game to initialize everything
-game.startGame();
+const game = new Game(); // Create a new instance of the Game class
+game.startGame(); // Start the game to initialize everything
 
 
 

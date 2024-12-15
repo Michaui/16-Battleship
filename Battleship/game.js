@@ -9,13 +9,15 @@ class Game {
     this.computerPlayer = new Player("Computer", true);
     //this.ships = this.createShips(); 
 
-    //Setup board for each player
+    //Setup board for each player (Gameboard is known to its player, but the player is not known to human/-computerboard)
     this.humanBoard = new Gameboard(this.humanPlayer, "humanBoardID"); //<div id="humanBoardID"></div>
     this.computerBoard = new Gameboard(this.computerPlayer, "computerBoardID"); //<div id="computerBoardID"></div>
 
-    //Declaration board for each player
-    this.humanPlayer.setBoard(this.humanBoard);
-    this.computerPlayer.setBoard(this.computerBoard);
+    /** Declaration board for each player (erstmal nicht notwendig, da Zuweisung schon bei Gameboard passiert).
+     * Würde bei Gameboard nicht der Spieler zugewiesen werden, wäre "setBoard" notwendig!
+    */
+    // this.humanPlayer.setBoard(this.humanBoard);
+    // this.computerPlayer.setBoard(this.computerBoard);
   }
 
   /*
@@ -41,21 +43,20 @@ class Game {
 
   // Start game
   startGame() {
-    this.updateTurnDisplay();
+    // this.updateTurnDisplay(); 
     this.humanBoard.drawMap(); // draw board for human player
     this.computerBoard.drawMap(); // draw board for computer player
     this.humanBoard.placeShipsRandomly(this.humanBoard.ships); // draw board for computer player
     // this.computerBoard.placeShipsRandomly(this.computerBoard.ships); // draw board for computer player
-
   }
+
 
   switchTurn() {
     this.currentPlayer = this.currentPlayer === "human" ? "computer" : "human";
     this.updateTurnDisplay();
   }
 
-  //show current player
-  updateTurnDisplay() {
+  updateTurnDisplay() {   //show current player
     const displayElement = document.getElementById("turnDisplay");
     displayElement.textContent = `It's ${this.currentPlayer}'s turn!`;
   }
@@ -64,9 +65,10 @@ class Game {
   handleAttack(x, y) {
     if (this.currentPlayer === "human") {
       //Human player attacks computer -> Pass computerplayer.board aka. Gameboard-Class
-      this.humanPlayer.attack(this.computerPlayer.board, x, y);
+      //this.humanPlayer.attack(this.computerPlayer.board, x, y); //VARIANTE 01 (mit setBoard-Funktion)
+      //VS: 
+      this.humanPlayer.attack(computerBoard.board, x, y) //VARIANTE 02
     } else {
-      //Computer player...
       this.computerPlayer.attack(this.humanPlayer.board);
     }
   }

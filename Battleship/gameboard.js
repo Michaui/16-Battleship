@@ -162,20 +162,17 @@ class Gameboard {
     const { shipLength, direction, position } = ship;
     let [x, y] = position;
   
-    // Entferne aktuelles Schiff
-    for (let i = 0; i < shipLength; i++) {
+    for (let i = 0; i < shipLength; i++) { // Entferne aktuelles Schiff
       const oldX = direction === "horizontal" ? x : x + i;
       const oldY = direction === "horizontal" ? y + i : y;
       this.board[oldX][oldY] = null;
       this.deleteShipSquare(oldX, oldY);
     }
-  
-    // Berechne neue Richtung
-    const newDirection = direction === "horizontal" ? "vertical" : "horizontal";
+
+    const newDirection = direction === "horizontal" ? "vertical" : "horizontal"; // Berechne neue Richtung
     ship.direction = newDirection;
   
-    // Versuche neues Schiff zu platzieren
-    if (this.canPlaceShip(ship, x, y)) {
+    if (this.canPlaceShip(ship, x, y)) { // Versuche neues Schiff zu platzieren
       this.placeShip(ship, x, y);
     } else {
       ship.direction = direction; // Rücksetzen der Richtung, falls fehlgeschlagen

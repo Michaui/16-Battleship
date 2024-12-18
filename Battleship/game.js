@@ -19,6 +19,11 @@ class Game {
 
     flipBtn.addEventListener('click', () => this.humanBoard.flipAllShips());
 
+    // flipBtn.addEventListener('click', () => {
+    //   this.humanBoard.flipAllShips();
+    //   this.computerboard.flipAllShips();
+    // });
+
     /** Declaration board for each player (erstmal nicht notwendig, da Zuweisung schon bei Gameboard passiert).
      * Würde bei Gameboard nicht der Spieler zugewiesen werden, wäre "setBoard" notwendig!
     */

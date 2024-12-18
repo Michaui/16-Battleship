@@ -6,12 +6,9 @@ class Gameboard {
     this.player = player; //Declartion gameboard for human and computer player
     this.boardElement = document.getElementById(boardID); // boardElement: declaration board
     this.boardSize = boardSize; // sizeX, sizeY: dimensions of the board (int)
-    //-------- Warum wird hier length: als attribut gesetzt??????????????
     this.board = Array.from({ length: this.boardSize }, () =>
-      Array(this.boardSize).fill(null)
-    ); //create boardgame
+      Array(this.boardSize).fill(null)); //create boardgame this.board[x=column][y=row]
     this.squares = []; //define boardElement squares for UI
-    //this.ships = []; //list of ships on the board (array of Ship objects)
     this.ships = this.createShips(); //create ships by initialize gameboard
     this.missedAttack = []; //coordinates of missed attacks (array of [x, y])
     /*this.drawMap(); //Draw Map after initialize new Class immediately.
@@ -112,7 +109,7 @@ class Gameboard {
       console.error(`Invalid coordinates in canPlaceShip: x=${x}, y=${y}`);
       return false;
     }
-    
+
     // Extrahierung: wie z.B.: const shipLength = ship.shipLength; 
     const { shipLength, direction } = ship;
 
@@ -156,7 +153,7 @@ class Gameboard {
   }
 
   //updateSquare() // Update square
- 
+
   drawShipSquare(x, y) { //------ADD UI FOR PLACING A SHIP!!!!!!!
     const square = this.squares.find((sq) => sq.dataset.row == (y) && sq.dataset.col == (x));
     square.classList.add("ship");

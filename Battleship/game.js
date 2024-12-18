@@ -1,6 +1,10 @@
 import Player from "./player.js";
 import Gameboard from "./gameboard.js";
 
+
+  //WENNS FUNKTIONIERT ZU FRAME.JS EXPORTTIEREN 
+  const flipBtn = document.querySelector('.flipBtn');
+
 class Game {
   constructor() {
     //Player
@@ -12,6 +16,8 @@ class Game {
     //Setup board for each player (Gameboard is known to its player, but the player is not known to human/-computerboard)
     this.humanBoard = new Gameboard(this.humanPlayer, "humanBoardID"); //<div id="humanBoardID"></div>
     this.computerBoard = new Gameboard(this.computerPlayer, "computerBoardID"); //<div id="computerBoardID"></div>
+
+    flipBtn.addEventListener('click', () => this.humanBoard.flipAllShips());
 
     /** Declaration board for each player (erstmal nicht notwendig, da Zuweisung schon bei Gameboard passiert).
      * Würde bei Gameboard nicht der Spieler zugewiesen werden, wäre "setBoard" notwendig!
@@ -71,7 +77,15 @@ class Game {
     } else {
       this.computerPlayer.attack(this.humanPlayer.board);
     }
-  }
+
+  flipBtn.addEventListener('click', () => {
+    this.humanBoard.flipAllShips(); 
+  });
+
+  } 
 }
+
+
+
 
 export default Game;

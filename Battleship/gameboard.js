@@ -60,7 +60,7 @@ class Gameboard {
       new Ship(0, "destroyer", 5), //(id,length)
       new Ship(1, "submarine", 4),
       new Ship(2, "battleship", 3),
-      // new Ship(3, "carrier", 2)
+      new Ship(3, "carrier", 2)
     ];
   }
 
@@ -80,19 +80,19 @@ class Gameboard {
           Instead, each of the shipLength positions in the board array is REFERENCED to the same ship object.*/
           this.board[x][y + i] = ship;
           this.drawShipSquare(x, y + i);
-          console.log(ship)
+          //console.log(ship)
           console.log(this.board)
         }
       } else if (direction === "vertical") {
         for (let i = 0; i < shipLength; i++) {
           this.board[x + i][y] = ship; // Set the ship vertically
           this.drawShipSquare(x + i, y);
-          console.log(ship)
+          //console.log(ship)
           console.log(this.board)
         }
       }
 
-      if (!this.ships.includes(ship)) {
+      if (!this.ships.includes(ship)) { //Wenn gelippt wird, muss da alte gesetzte ship erneuert werden? 
         // Check if the ship is already in the list before pushing it (includes)
         this.ships.push(ship); // Add ship to the list of ships if not already added
       }
@@ -101,7 +101,6 @@ class Gameboard {
       //------ADD UI FUNCTION FOR "CANT PLACING A SHIP ONLY FOR HUMAN PLAYER!!!!!!!"
     }
   }
-
 
   // Check if a ship can be placed on the board
   canPlaceShip(ship, x, y) {
@@ -129,6 +128,68 @@ class Gameboard {
     return true; // No collision, can place ship
   }
 
+  // canFlipShip(ship) { //Ohne Hilfe 
+  //   const { direction, shipLength, position } = ship; 
+  //   let [x, y] = position; 
+
+  //   if (direction === "horizontal") {
+  //     // if (this.canPlaceShip(ship, x, y)) {
+  //       for (let i = 0; i < shipLength; i++) {  // Entferne das Schiff von der alten Position
+  //         if (this.board[x][y + i] === ship) {
+  //           this.board[x][y + i] = null;
+  //           this.deleteShipSquare(x, y + i); 
+  //         }
+  //       // }
+  //       ship.direction = "vertical"; 
+  //       this.placeShip(ship, x, y);
+  //     }
+  //   } else {
+  //     // if (this.canPlaceShip(ship, x, y)) {
+  //       for (let i = 0; i < shipLength; i++) { // Entferne das Schiff von der alten Position
+  //         if (this.board[x + i][y] === ship) {
+  //           this.board[x + i][y] = null;
+  //           this.deleteShipSquare(x + i, y); 
+  //         }
+  //       // }
+        
+  //       ship.direction = "horizontal";
+  //       this.placeShip(ship, x, y);
+  //     }
+  //   } 
+  // }
+
+  canFlipShip(ship) {
+    const { shipLength, direction, position } = ship;
+    let [x, y] = position;
+  
+    // Entferne aktuelles Schiff
+    for (let i = 0; i < shipLength; i++) {
+      const oldX = direction === "horizontal" ? x : x + i;
+      const oldY = direction === "horizontal" ? y + i : y;
+      this.board[oldX][oldY] = null;
+      this.deleteShipSquare(oldX, oldY);
+    }
+  
+    // Berechne neue Richtung
+    const newDirection = direction === "horizontal" ? "vertical" : "horizontal";
+    ship.direction = newDirection;
+  
+    // Versuche neues Schiff zu platzieren
+    if (this.canPlaceShip(ship, x, y)) {
+      this.placeShip(ship, x, y);
+    } else {
+      ship.direction = direction; // Rücksetzen der Richtung, falls fehlgeschlagen
+      this.placeShip(ship, x, y); // Wiederherstellen der alten Platzierung
+      console.error("Cannot flip ship: Invalid position!");
+    }
+  }
+
+  flipAllShips() {
+    // this.canFlipShip(this.ships);
+    this.ships.forEach((ship) => {
+      this.canFlipShip(ship);
+    });
+  }
 
   //Place ships randomly for computer player
   placeShipsRandomly(ships) {
@@ -154,9 +215,19 @@ class Gameboard {
 
   //updateSquare() // Update square
 
+  // FUNCTIONS FOR DRAW AND REMOVE SHIP SQUARES 
+  findShipSquare(x, y) { //------ADD UI FOR PLACING A SHIP!!!!!!!
+    return this.squares.find((sq) => sq.dataset.row == (y) && sq.dataset.col == (x));
+  }
+
   drawShipSquare(x, y) { //------ADD UI FOR PLACING A SHIP!!!!!!!
-    const square = this.squares.find((sq) => sq.dataset.row == (y) && sq.dataset.col == (x));
+    const square = this.findShipSquare(x, y); 
     square.classList.add("ship");
+  }
+
+  deleteShipSquare(x, y){
+    const square = this.findShipSquare(x, y); 
+    square.classList.remove("ship");
   }
 
 

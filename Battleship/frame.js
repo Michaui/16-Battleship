@@ -1,10 +1,13 @@
+import Ship from "./ship.js";
+import Gameboard from "./gameboard.js";
+
 //Collect all ships under shipContainer after button selector
 // const container = document.querySelector('#shipContainer'); //select first
 // const shipContainer = container.querySelectorAll('div'); //select all divs in shipContainer and return as array
 
 
 
-const flipBtn = document.querySelector('.flipBtn');
+// const flipBtn = document.querySelector('.flipBtn');
 // const startBtn = document.querySelector('.startBtn');
 
 
@@ -31,6 +34,6 @@ function flip() {
       }); 
 }
 
-flipBtn.addEventListener('click', flip); 
+//flipBtn.addEventListener('click', flip); 
 
 

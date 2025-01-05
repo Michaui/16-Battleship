@@ -146,9 +146,13 @@ height:300px;
   background-color: rgb(47, 0, 255);
 }
 
+.square.flip {
+  background-color: rgb(12, 156, 7);
+}
+
 /* Verfehlter Angriff */
 .square.missed {
-  background-color: blue;
+  background-color: rgb(209, 231, 5);
 }
 
 

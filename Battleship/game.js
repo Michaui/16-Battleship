@@ -59,6 +59,11 @@ class Game {
     this.computerBoard.drawMap(); // draw board for computer player
     this.humanBoard.placeShipsRandomly(this.humanBoard.ships); // draw board for computer player
     // this.computerBoard.placeShipsRandomly(this.computerBoard.ships); // draw board for computer player
+  
+    // Überprüfen, ob die Schiffe gedreht werden können
+    this.humanBoard.ships.forEach((ship) => {
+     this.humanBoard.showFlipSquare(ship); 
+    });
   }
 
 
@@ -78,7 +83,7 @@ class Game {
       //Human player attacks computer -> Pass computerplayer.board aka. Gameboard-Class
       //this.humanPlayer.attack(this.computerPlayer.board, x, y); //VARIANTE 01 (mit setBoard-Funktion)
       //VS: 
-      this.humanPlayer.attack(computerBoard.board, x, y) //VARIANTE 02
+      this.humanPlayer.attack(this.computerBoard, x, y) //VARIANTE 02
     } else {
       this.computerPlayer.attack(this.humanPlayer.board);
     }
@@ -89,8 +94,5 @@ class Game {
 
   } 
 }
-
-
-
 
 export default Game;

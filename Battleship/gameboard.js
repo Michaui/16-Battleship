@@ -201,25 +201,16 @@ class Gameboard {
     return canFlip; // Gib zurück, ob das Schiff gedreht werden kann
   }
 
-  showFlipSquare(ship) {
+  showFlipSquare(ship) { //Show and remove FlipSquare
     if (this.canFlipShip(ship)) {
-      this.drawFlipSquare(ship); // Feedback, wenn drehbar
+      const square = this.findShipSquare(ship.position[0], ship.position[1]);
+      square.classList.add("flip");
+      square.onclick = () => this.flipShip(ship);
     } else {
-      this.removeFlipSquare(ship);
+      const square = this.findShipSquare(ship.position[0], ship.position[1]);
+      square.classList.remove("flip");
+      square.onclick = null; // Entferne das Klickverhalten
     }
-  }
-
-  drawFlipSquare(ship) {
-    const square = this.findShipSquare(ship.position[0], ship.position[1]);
-    square.classList.add("flip");
-    square.onclick = () => this.flipShip(ship);
-
-  }
-
-  removeFlipSquare(ship) {
-    const square = this.findShipSquare(ship.position[0], ship.position[1]);
-    square.classList.remove("flip");
-    square.onclick = null; // Entferne das Klickverhalten
   }
 
   deleteShip(ship) {

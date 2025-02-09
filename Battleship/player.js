@@ -2,7 +2,7 @@ class Player {
   constructor(name, isComputer = false) {
     this.name = name;
     this.isComputer = isComputer;
-    this.board = null; //Each player has a gameboard. Definded in game.js
+    // this.board = null; //Each player has a gameboard. Definded in game.js (Z.19 - setBoard)
 
     /*
     Create Gameboard directly
@@ -17,9 +17,9 @@ class Player {
   }
 
   //Declaration of boards for each player (not necessary if instance "Player" create gameboard directly)
-  setBoard(board) {
-    this.board = board;
-  }
+  // setBoard(board) {
+  //   this.board = board;
+  // }
 
   //Attack method
   attack(opponentBoard, x, y) {

@@ -5,7 +5,7 @@ import Game from "./game.js";
 class Gameboard {
   constructor(player, boardID, boardSize = 9) {
     this.player = player; //Declartion gameboard for human and computer player
-    this.boardElement = document.getElementById(boardID); // boardElement: declaration board
+    this.boardElement = document.getElementById(boardID); // boardElement: declaration board - div id="computerBoardID"></div>
     this.boardSize = boardSize; // sizeX, sizeY: dimensions of the board (int)
     this.board = Array.from({ length: this.boardSize }, () =>
       Array(this.boardSize).fill(null)); //create boardgame this.board[x=column][y=row]
@@ -278,17 +278,16 @@ class Gameboard {
       const ship = target; //Set target as ship aka Object einfach mit this.board[y][x] herausholen?????????????????????????
 
       const hitPosition = ship.direction === "horizontal"
-        ? x - ship.position[0] //y, x: Abfrage der Position des Objekt Ships ship.position[0] (x-Kooridnate, weil sich nur bei Horizonzale die Zahl ändert "changes"; y-Koordinate bleibt konstant, weil sich die Höhe nicht ändert), heißt ship.position [x-Position] beziehungsweise überschreiben von this.position = null; oder ship.position = [x=2, y=3]
-        : y - ship.position[1]; //y, x: Abfrage der Position des Objekt Ships ship.position[1] (y-Koordinate, weil sich nur bei Vertikal die Zahl ändert "changes"; x-Koordinate bleibt konstant, weil sich die breite nicht ändert), heißt ship.position [y-Position] beziehungsweise überschreiben von this.position = null; 
+        ? x - ship.position[0] //-> ? Calculate based on startposition (x,y) and hit position for horizontal ship (y constant, x changes) -> startpositionX - hitPositionX = shipPart 1-n
+        : y - ship.position[1]; //-> : Else calculate based on startposition (x,y) and hit position for vertical ship (y changes, x constant) -> startpositionY - hitPositionY = shipPart 1-n
       /* 
       The line ship.position[0] is set in the placeShip() method when the ship is positioned by: 
       placeShip(ship, x, y){... ship.setPosition([x, y]) ...}
-      -> ? Calculate based on startposition (x,y) and hit position for horizontal ship (y constant, x changes) -> startpositionX - hitPositionX = shipPart 1-n
-      -> : Else calculate based on startposition (x,y) and hit position for vertical ship (y changes, x constant) -> startpositionY - hitPositionY = shipPart 1-n
       
       Beispiel: Horizontale Platzierung
         Schiffsposition: ship.position = [2, 3] (Startpunkt: x=2, y=3)
-        Schiffslänge: 3 Felder gesetzt mit Ship.position: (1Feld:[2, 3]; 2Feld:[2, 3]; 3Feld:[2, 3])
+        Schiffslänge: 3 Felder gesetzt mit Ship.position: (1Feld:[postion: 2, 3]; 2Feld:[postion: 2, 3]; 3Feld:[postion: 2, 3])
+        Schiffspositonen in Koordinate ist 1Feld [2,3]; 2 Feld [3,3], 3Fled [4,3].
         Aktueller Treffer: x = 4, y = 3 (Zelle, auf die geschossen wird)
         Wenn das Schiff horizontal liegt, interessiert uns die x-Koordinate.
     

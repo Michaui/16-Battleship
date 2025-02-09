@@ -85,7 +85,7 @@ class Game {
       //VS: 
       this.humanPlayer.attack(this.computerBoard, x, y) //VARIANTE 02
     } else {
-      this.computerPlayer.attack(this.humanPlayer.board);
+      this.computerPlayer.attack(this.humanBoard, x, y);
     }
 
   flipBtn.addEventListener('click', () => {

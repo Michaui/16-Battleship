@@ -1,5 +1,4 @@
 import Ship from "./ship.js";
-import Game from "./game.js";
 
 // Gameboard Class Properties
 class Gameboard {
@@ -8,7 +7,7 @@ class Gameboard {
     this.boardElement = document.getElementById(boardID); // boardElement: declaration board - div id="computerBoardID"></div>
     this.boardSize = boardSize; // sizeX, sizeY: dimensions of the board (int)
     this.board = Array.from({ length: this.boardSize }, () =>
-      Array(this.boardSize).fill(null)); //create boardgame this.board[x=column][y=row]
+      Array(this.boardSize).fill(null)); //create boardgame this.board[x=column][y=row] Only for logic, not UI (aka.this.squares)
     this.squares = []; //is an array used to store references to the DOM elements (squares) of the game board, enabling dynamic control of their state and appearance in the UI.
     this.ships = this.createShips(); //create ships by initialize gameboard
     this.missedAttack = []; //coordinates of missed attacks (array of [x, y])
@@ -31,6 +30,7 @@ class Gameboard {
         square.dataset.row = row;  //Gebe jedem Div eine row ID 
         square.dataset.col = col;  //Gebe jedem Div eine col ID
         // square.style.width = "50px"; square.style.height = "50px"; //Defined by SCSS.
+
         this.boardElement.appendChild(square);
         this.squares.push(square);
       }
@@ -74,18 +74,30 @@ class Gameboard {
       const { shipLength, direction } = ship; //Hole die Attribute aus dem Objekt: 3 horizontal und speicher sie in die Variablen  shipLength und direction. 
 
       ship.setPosition(x, y); // Set the starting position of the ship instance/object
-
       if (direction === "horizontal") {
         for (let i = 0; i < shipLength; i++) {
           /*Set the ship horizontally:
           The ship object is not copied or instantiated three times! 
           Instead, each of the shipLength positions in the board array is REFERENCED to the same ship object.*/
           this.board[x][y + i] = ship;
+
+          //FOR UI-EVENTLISTENER PART 
+          // setDataSquare.dataset.ship = true; //set UI Square as ship:true 
+          // const setDataSquare = this.findShipSquare(x, y + i);
+          // setDataSquare.setAttribute("draggable", "true"); 
+          // setDataSquare.addEventListener("dragstart", (event) => this.dragStart(event, ship));
+
           this.drawShipSquare(x, y + i);
         }
       } else if (direction === "vertical") {
         for (let i = 0; i < shipLength; i++) {
           this.board[x + i][y] = ship; // Set the ship vertically
+
+          // const setDataSquare = this.findShipSquare(x + i, y);
+          // setDataSquare.setAttribute("draggable", "true"); 
+          // setDataSquare.addEventListener("dragstart", (event) => this.dragStart(event));
+
+
           this.drawShipSquare(x + i, y);
         }
       }
@@ -344,6 +356,11 @@ class Gameboard {
   isAllShipsSunk() {
     return this.ships.every((ship) => ship.isSunk()); //check each ship if method: isSunk is true. 
   }
+
+  // dragStart(event){
+  //   const square = event.target; //hole ship-Objekt aus dem Square  
+  //   const ship = square.ship; 
+  // }
 }
 
 export default Gameboard;

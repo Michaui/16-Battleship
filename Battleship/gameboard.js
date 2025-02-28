@@ -39,14 +39,10 @@ class Gameboard {
     if (this.boardElement.id == 'computerBoardID') { //<div id="computerBoardID"></div>
       this.boardElement.style.display = 'none'; //Disable Computerboard
     }
+
+    this.boardElement.addEventListener("dragover", (event) => this.dragOver(event));
+    this.boardElement.addEventListener("drop", (event) => this.drop(event));
   }
-
-
-  //getDrawedSquare: Nehme aus dem drawMap die richtige Kachel 
-  //Nächste Methode drawShip() und zeichne darauf das schiff? 
-  //getSquare(row, col){
-  //return this.squares.find(square => square.dataset.row == row && square.dataset.col == col); 
-  //}
 
   //create ships for gameboard
   createShips() {
@@ -76,34 +72,57 @@ class Gameboard {
       ship.setPosition(x, y); // Set the starting position of the ship instance/object
       if (direction === "horizontal") {
         for (let i = 0; i < shipLength; i++) {
-          /*Set the ship horizontally:
-          The ship object is not copied or instantiated three times! 
-          Instead, each of the shipLength positions in the board array is REFERENCED to the same ship object.*/
-          this.board[x][y + i] = ship;
-
-          //FOR UI-EVENTLISTENER PART 
-          // setDataSquare.dataset.ship = true; //set UI Square as ship:true 
-          // const setDataSquare = this.findShipSquare(x, y + i);
-          // setDataSquare.setAttribute("draggable", "true"); 
-          // setDataSquare.addEventListener("dragstart", (event) => this.dragStart(event, ship));
-
+          this.board[x][y + i] = ship; // Set the ship horizontal on each boar square
           this.drawShipSquare(x, y + i);
         }
       } else if (direction === "vertical") {
         for (let i = 0; i < shipLength; i++) {
-          this.board[x + i][y] = ship; // Set the ship vertically
-
-          // const setDataSquare = this.findShipSquare(x + i, y);
-          // setDataSquare.setAttribute("draggable", "true"); 
-          // setDataSquare.addEventListener("dragstart", (event) => this.dragStart(event));
-
-
+          this.board[x + i][y] = ship; // Set the ship vertically on each boar square
           this.drawShipSquare(x + i, y);
         }
       }
       // console.log(this.board)
+      const firstSquare = this.findShipSquare(x, y);
+      firstSquare.setAttribute("draggable", "true"); // Set the first square of the ship to draggable -> Drag and Drop event
+      firstSquare.addEventListener("dragstart", (event) => this.dragStart(event, ship));
     }
   }
+
+  dragStart(event, ship) {
+    event.dataTransfer.setData("shipID", ship.id); 
+    event.dataTransfer.setData("startX", ship.position[0]);
+    event.dataTransfer.setData("startY", ship.position[1]);
+  }
+
+  dragOver(event) {
+      event.preventDefault();
+  }
+
+  drop(event) {
+      event.preventDefault();
+      const shipID = event.dataTransfer.getData("shipID");
+      const startX = parseInt(event.dataTransfer.getData("startX"));
+      const startY = parseInt(event.dataTransfer.getData("startY"));
+
+      const ship = this.ships.find(s => s.id == shipID);
+      const newX = parseInt(event.target.dataset.col);
+      const newY = parseInt(event.target.dataset.row);
+
+      if (this.canPlaceShip(ship, newX, newY)) {
+          this.deleteShip(ship); // Entferne altes Schiff
+          this.placeShip(ship, newX, newY);
+          this.ships.forEach((ship) => { this.showFlipSquare(ship) });
+      } else {
+          this.placeShip(ship, startX, startY); // Falls es nicht passt, bleibt es an alter Stelle
+      }
+
+
+
+      // const newFirstSquare = this.findShipSquare(newX, newY);
+      // newFirstSquare.setAttribute("draggable", "true");
+      // newFirstSquare.addEventListener("click", () => this.flipShip(ship)); 
+  }
+
 
   // Check if a ship can be placed on the board
   canPlaceShip(ship, x, y) {
@@ -240,6 +259,8 @@ class Gameboard {
   deleteShipSquare(x, y) {
     const square = this.findShipSquare(x, y);
     square.classList.remove("ship");
+    square.classList.remove("flip");
+    square.onclick = null; 
   }
 
   changeDirection(ship) {
@@ -356,11 +377,6 @@ class Gameboard {
   isAllShipsSunk() {
     return this.ships.every((ship) => ship.isSunk()); //check each ship if method: isSunk is true. 
   }
-
-  // dragStart(event){
-  //   const square = event.target; //hole ship-Objekt aus dem Square  
-  //   const ship = square.ship; 
-  // }
 }
 
 export default Gameboard;
